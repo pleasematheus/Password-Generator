@@ -1,46 +1,50 @@
-import React, {useState} from 'react'
-import {View, Text, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native'
+import React, { useState } from "react";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	TouchableOpacity,
+	ToastAndroid,
+} from "react-native";
 
-import Slider from '@react-native-community/slider'
-import Clipboard from 'expo-clipboard'
+import Slider from "@react-native-community/slider";
+import Clipboard from "expo-clipboard";
 
-let charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()-_=+§´`~^[]{},.;:/?°'
+let charset =
+	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()-_=+§´`~^[]{},.;:/?°";
 
 export default function App() {
-	const [password, setPassword] = useState('')
-	const [size, setSize] = useState(8)
+	const [password, setPassword] = useState("");
+	const [size, setSize] = useState(8);
 
 	const showAlert = () => {
-		Alert.alert(
-			"Copiar",
-			"Senha copiada para a área de transferência!",
-			[{
-				text: "Ok",
-				style: "default",
-			}],
-			{
-				cancelable: true
-			}
-		)
-	}
+		ToastAndroid.showWithGravityAndOffset(
+			"Senha copiada!",
+			ToastAndroid.SHORT,
+			ToastAndroid.BOTTOM,
+			0,
+			100
+		);
+	};
 
 	function generatePass() {
-		let pass = ''
+		let pass = "";
 		for (let i = 0, n = charset.length; i < size; i++) {
-			pass += charset.charAt(Math.floor(Math.random() * n))
+			pass += charset.charAt(Math.floor(Math.random() * n));
 		}
-		setPassword(pass)
+		setPassword(pass);
 	}
 
 	function copyPass() {
-		Clipboard.setString(password)
-		showAlert()
+		Clipboard.setString(password);
+		showAlert();
 	}
 
 	return (
 		<View style={styles.container}>
 			<Image
-				source={ require('./src/assets/logo.png') }
+				source={require("./src/assets/logo.png")}
 				style={styles.logo}
 			/>
 
@@ -48,11 +52,11 @@ export default function App() {
 
 			<View style={styles.area}>
 				<Slider
-					style={{height: 50}}
+					style={{ height: 50 }}
 					minimumValue={5}
 					maximumValue={15}
-					minimumTrackTintColor= "#FF0000"
-					maximumTrackTintColor= "#000"
+					minimumTrackTintColor="#FF0000"
+					maximumTrackTintColor="#000"
 					value={size}
 					onValueChange={(valor) => setSize(valor.toFixed(0))}
 				/>
@@ -62,54 +66,55 @@ export default function App() {
 				<Text style={styles.buttonText}>Gerar senha</Text>
 			</TouchableOpacity>
 
-			{password !== '' && (
+			{password !== "" && (
 				<View style={styles.area}>
-					<Text style={styles.password} onLongPress={copyPass}>{password}</Text>
-				</View>	
+					<Text style={styles.password} onLongPress={copyPass}>
+						{password}
+					</Text>
+				</View>
 			)}
-
 		</View>
-	)
+	);
 }
 
 const styles = StyleSheet.create({
-	container:{
+	container: {
 		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#F3F3FF'
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: "#F3F3FF",
 	},
-	logo:{
-		marginBottom: 60
+	logo: {
+		marginBottom: 60,
 	},
-	title:{
+	title: {
 		fontSize: 30,
-		fontWeight: 'bold'
+		fontWeight: "bold",
 	},
-	area:{
+	area: {
 		marginTop: 15,
 		marginBottom: 15,
-		backgroundColor: '#FFF',
-		width: '85%',
-		borderRadius: 7
-	},
-	button:{
-		backgroundColor: '#FFA200',
-		width: '85%',
-		height: 50,
-		justifyContent: 'center',
-		alignItems: 'center',
+		backgroundColor: "#FFF",
+		width: "85%",
 		borderRadius: 7,
-		marginBottom: 25
 	},
-	buttonText:{
+	button: {
+		backgroundColor: "#FFA200",
+		width: "85%",
+		height: 50,
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 7,
+		marginBottom: 25,
+	},
+	buttonText: {
 		fontSize: 20,
-		color: '#FFF',
-		fontWeight: 'bold'
+		color: "#FFF",
+		fontWeight: "bold",
 	},
-	password:{
+	password: {
 		padding: 10,
-		textAlign: 'center',
-		fontSize: 20
-	}
-})
+		textAlign: "center",
+		fontSize: 20,
+	},
+});
